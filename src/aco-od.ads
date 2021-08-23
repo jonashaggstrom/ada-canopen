@@ -1,8 +1,9 @@
-with ACO.States;
-with ACO.Messages;
 with ACO.Events;
+with ACO.Messages;
 with ACO.OD_Types;
 with ACO.SDO_Sessions;
+with ACO.States;
+--with Ada.Real_Time;
 
 package ACO.OD is
 
@@ -110,15 +111,26 @@ package ACO.OD is
       (This : Object_Dictionary)
        return Natural;
 
+
+
    procedure Set_Communication_Cycle_Period
       (This    : in out Object_Dictionary;
-       Period  : in     Natural)
-      with Pre => This.Entry_Exist (Comm_Cycle_Period_Index, 0);
+       Period_Ms  : in Natural)
+     with Pre => This.Entry_Exist (Comm_Cycle_Period_Index, 0);
+   procedure Set_Communication_Cycle_Period
+      (This    : in out Object_Dictionary;
+       Period_Dur  : in Duration)
+     with Pre => This.Entry_Exist (Comm_Cycle_Period_Index, 0);
 
    function Get_Communication_Cycle_Period
       (This : Object_Dictionary)
        return Natural
-      with Pre => This.Entry_Exist (Comm_Cycle_Period_Index, 0);
+     with Pre => This.Entry_Exist (Comm_Cycle_Period_Index, 0);
+
+   function Get_Communication_Cycle_Period
+      (This : Object_Dictionary)
+       return Duration
+     with Pre => This.Entry_Exist (Comm_Cycle_Period_Index, 0);
 
    procedure Set_Sync_Counter_Overflow
       (This    : in out Object_Dictionary;

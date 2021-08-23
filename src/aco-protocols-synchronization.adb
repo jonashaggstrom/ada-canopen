@@ -1,7 +1,8 @@
 with ACO.States;
+with Ada.Real_Time; use Ada.Real_Time;
 package body ACO.Protocols.Synchronization is
 
-   function To_Ms_From_100us (T : Natural) return Natural is (T / 10);
+   --function To_Ms_From_100us (T : Natural) return Natural is (T / 10);
 
    procedure Counter_Reset
       (This : in out SYNC)
@@ -62,17 +63,14 @@ package body ACO.Protocols.Synchronization is
       (This  : access Sync_Producer_Alarm;
        T_Now : in     Ada.Real_Time.Time)
    is
-      use type Ada.Real_Time.Time;
       use Alarms;
 
       SYNC_Ref : access SYNC renames This.SYNC_Ref;
-
-      Period : constant Natural :=
-         To_Ms_From_100us (SYNC_Ref.Od.Get_Communication_Cycle_Period);
+      Period : constant Duration := SYNC_Ref.Od.Get_Communication_Cycle_Period;
    begin
-      if Period > 0 then
+      if Period > 0.0 then
          SYNC_Ref.Timers.Set
-            (Alarm_Access (This), T_Now + Ada.Real_Time.Milliseconds (Period));
+           (Alarm_Access (This), T_Now + To_Time_Span(D =>Period));
          SYNC_Ref.Send_Sync;
       end if;
    end Signal;
@@ -80,16 +78,14 @@ package body ACO.Protocols.Synchronization is
    procedure Sync_Producer_Start
       (This : in out SYNC)
    is
-      use Ada.Real_Time;
-
-      Period : constant Natural :=
-         To_Ms_From_100us (This.Od.Get_Communication_Cycle_Period);
+      Period : constant Duration := This.Od.Get_Communication_Cycle_Period;
    begin
-      if Period > 0 then
-         This.Timers.Set
-            (Alarm       => This.Producer_Alarm'Unchecked_Access,
-             Signal_Time =>
-               This.Handler.Current_Time + Milliseconds (Period));
+      if Period > 0.0 then
+         ACO.Log.Put_Line(ACO.Log.Debug, "Starting sync producer ");
+         ACO.Log.Put_Line(ACO.Log.Debug, "Comm Cycle Period_s: " & Duration'Image(Period));
+             This.Timers.Set
+              (Alarm       => This.Producer_Alarm'Unchecked_Access,
+               Signal_Time => This.Handler.Current_Time + To_Time_Span(Period));
       end if;
    end Sync_Producer_Start;
 

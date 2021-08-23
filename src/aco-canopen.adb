@@ -1,5 +1,6 @@
-with Ada.Exceptions;
 with ACO.Log;
+with ACO.Messages; use ACO.Messages;
+with Ada.Exceptions;
 
 package body ACO.CANopen is
 
@@ -24,8 +25,7 @@ package body ACO.CANopen is
    begin
       while This.Driver.Is_Message_Pending loop
          This.Driver.Receive_Message_Blocking (Msg);
-         --  ACO.Log.Put_Line
-         --     (ACO.Log.Debug, "Handling " & ACO.Messages.Image (Msg));
+
          This.Events.Handler_Events.Update
            ((Event => ACO.Events.Received_Message,
              Msg   => Msg));
@@ -56,16 +56,12 @@ package body ACO.CANopen is
 
    task body Periodic_Task
    is
-      use type Ada.Real_Time.Time;
 
       Next_Release : Ada.Real_Time.Time;
-      Period : constant Ada.Real_Time.Time_Span :=
-         Ada.Real_Time.Milliseconds (Period_Ms);
    begin
       Ada.Synchronous_Task_Control.Suspend_Until_True (This.Suspension);
 
       ACO.Log.Put_Line (ACO.Log.Debug, "Starting periodic worker task...");
-
       Next_Release := This.Current_Time;
 
       loop
@@ -79,7 +75,7 @@ package body ACO.CANopen is
                    Ada.Exceptions.Exception_Information (E));
          end;
 
-         Next_Release := Next_Release + Period;
+         Next_Release := Next_Release + To_Time_Span(Period_Dur.all);
          delay until Next_Release;
       end loop;
    end Periodic_Task;

@@ -1,5 +1,7 @@
-with Ada.Unchecked_Conversion;
+
 with ACO.Utils.Byte_Order;
+
+with Ada.Unchecked_Conversion;
 
 package body ACO.Generic_Entry_Types is
    use ACO.Utils.Byte_Order;
