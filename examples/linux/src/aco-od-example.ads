@@ -1,5 +1,5 @@
-with ACO.OD_Types.Entries;
 with ACO.Generic_Entry_Types;
+with ACO.OD_Types.Entries;
 
 package ACO.OD.Example is
    --  Shall be generated based on an EDS file
@@ -66,7 +66,7 @@ private
 
    --  0x1006 Communication Cycle Period VAR
 
-   Comm_Cycle_Per_Var : aliased Entry_U32 := Create (RW, 10_000);
+   Comm_Cycle_Per_Var : aliased Entry_Dur := Create (RW, 0.000001);
 
    Comm_Cycle_Per_Data : aliased Entry_Array :=
       (0 => Comm_Cycle_Per_Var'Access);
