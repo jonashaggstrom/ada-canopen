@@ -1,6 +1,8 @@
 with ACO.Generic_Entry_Types;
 
+
 package ACO.OD_Types.Entries is
+
 
    pragma Preelaborate;
 
@@ -37,6 +39,11 @@ package ACO.OD_Types.Entries is
 
    type Entry_F32 is new F32_Pack.Entry_Type with null record;
 
+   type Dur is new Duration;
+
+   package Dur_Pack is new ACO.Generic_Entry_Types (Dur);
+
+   type Entry_Dur is new Dur_Pack.Entry_Type with null record;
 
    subtype Visible_String is String;
 

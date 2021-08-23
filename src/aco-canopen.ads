@@ -1,12 +1,12 @@
-with Ada.Real_Time;
-with Ada.Finalization;
-with ACO.Messages;
 with ACO.Configuration;
-with ACO.Events;
 with ACO.Drivers;
 
-private with Ada.Synchronous_Task_Control;
+with ACO.Events;
+with ACO.Messages;
+with Ada.Finalization;
+with Ada.Real_Time; use Ada.Real_Time;
 private with ACO.Messages.Buffer;
+private with Ada.Synchronous_Task_Control;
 
 package ACO.CANopen is
 
@@ -36,7 +36,7 @@ package ACO.CANopen is
 
    task type Periodic_Task
       (This      : not null access Handler;
-       Period_Ms : Positive)
+       Period_Dur : not null access Duration)
       with Priority => ACO.Configuration.Periodic_Task_Priority;
 
 private

@@ -1,5 +1,5 @@
-with Ada.Tags;
 with ACO.OD_Types.Entries;
+with Ada.Tags;
 with Interfaces;
 
 package body ACO.OD is
@@ -206,22 +206,46 @@ package body ACO.OD is
 
    procedure Set_Communication_Cycle_Period
       (This    : in out Object_Dictionary;
-       Period  : in     Natural)
+       Period_Ms  : in     Natural)
    is
-      E : Entry_U32;
+      Period_s : constant Float := Float(Period_Ms)/1000.0;
+      E : Entry_Dur;
    begin
-      E.Write (U32 (Period));
+      E.Write (Dur (Duration(Period_s)));
       This.Set_Entry (E, Comm_Cycle_Period_Index, 0);
    end Set_Communication_Cycle_Period;
+
+   procedure Set_Communication_Cycle_Period
+      (This    : in out Object_Dictionary;
+       Period_Dur  : in Duration)
+   is
+      E : Entry_Dur;
+   begin
+      E.Write (Dur (Period_Dur));
+      This.Set_Entry (E, Comm_Cycle_Period_Index, 0);
+   end Set_Communication_Cycle_Period;
+
 
    function Get_Communication_Cycle_Period
       (This : Object_Dictionary)
        return Natural
    is
-      Period : U32;
+      Period : Dur;
    begin
-      Period := Entry_U32 (This.Get_Entry (Comm_Cycle_Period_Index, 0)).Read;
+      Period := Entry_Dur (This.Get_Entry (Comm_Cycle_Period_Index, 0)).Read;
       return Natural (Period);
+   end Get_Communication_Cycle_Period;
+
+   function Get_Communication_Cycle_Period
+      (This : Object_Dictionary)
+       return Duration
+   is
+      Stored_Dur : Dur;
+      Period_Dur : Duration;
+   begin
+      Stored_Dur := Entry_Dur(This.Get_Entry (Comm_Cycle_Period_Index, 0)).Read;
+      Period_Dur := Duration(Stored_Dur);
+      return Period_Dur;
    end Get_Communication_Cycle_Period;
 
    procedure Set_Sync_Counter_Overflow
