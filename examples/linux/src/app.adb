@@ -1,18 +1,16 @@
-with Ada.Real_Time;
-with ACO.Drivers.Socket;
 with ACO.CANopen;
+with ACO.Drivers.Socket;
+with ACO.Log;
 with ACO.Nodes.Locals;
 with ACO.Nodes.Remotes;
 with ACO.OD.Example;
-with ACO.Log;
-with Ada.Text_IO.Text_Streams;
-
-with Ada.Text_IO;
-with Ada.Exceptions;
-
-with ACO.OD_Types;
 with ACO.OD_Types.Entries;
 with ACO.SDO_Sessions;
+with Ada.Exceptions;
+
+with Ada.Real_Time;
+with Ada.Text_IO.Text_Streams;
+
 
 package body App is
 
@@ -22,7 +20,9 @@ package body App is
 
    H : aliased ACO.CANopen.Handler (Driver => D'Access);
 
-   W : ACO.CANopen.Periodic_Task (H'Access, Period_Ms => 10);
+   P : aliased Duration := Duration(0.01);
+
+   W : ACO.CANopen.Periodic_Task (H'Access, Period_Dur => P'Access);
 
    procedure Run
       (Node : in out ACO.Nodes.Node_Base'Class)
