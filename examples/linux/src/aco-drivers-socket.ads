@@ -4,34 +4,38 @@ package ACO.Drivers.Socket is
 
    type CAN_Driver is new Driver with private;
 
-   CAN_If_Name : constant String := "vcan0";
+   Default_CAN_If_Name : constant String := "can1";
 
    overriding
    procedure Receive_Message_Blocking
-      (This : in out CAN_Driver;
-       Msg  :    out ACO.Messages.Message);
+     (This : in out CAN_Driver;
+      Msg  :    out ACO.Messages.Message);
    overriding
    procedure Send_Message
-      (This : in out CAN_Driver;
-       Msg  : in     ACO.Messages.Message);
+     (This : in out CAN_Driver;
+      Msg  : in     ACO.Messages.Message);
 
    overriding
+   procedure Initialize (This : in out CAN_Driver) is null
+     with OBSOLESCENT => "use Initialie with IF_Name";
+
+   not overriding
    procedure Initialize
-      (This : in out CAN_Driver);
+     (This : in out CAN_Driver; If_Name : String );
 
    overriding
    procedure Finalize
-      (This : in out CAN_Driver);
+     (This : in out CAN_Driver);
 
    overriding
    function Is_Message_Pending
-      (This : CAN_Driver)
-       return Boolean;
+     (This : CAN_Driver)
+      return Boolean;
 
    overriding
    function Current_Time
-      (This : CAN_Driver)
-       return Ada.Real_Time.Time;
+     (This : CAN_Driver)
+      return Ada.Real_Time.Time;
 
 private
 

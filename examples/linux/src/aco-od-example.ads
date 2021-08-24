@@ -66,7 +66,7 @@ private
 
    --  0x1006 Communication Cycle Period VAR
 
-   Comm_Cycle_Per_Var : aliased Entry_Dur := Create (RW, 0.000001);
+   Comm_Cycle_Per_Var : aliased Entry_Dur := Create (Accessability => RW,Data => 1.000000001);
 
    Comm_Cycle_Per_Data : aliased Entry_Array :=
       (0 => Comm_Cycle_Per_Var'Access);
