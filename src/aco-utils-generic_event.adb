@@ -1,5 +1,5 @@
 package body ACO.Utils.Generic_Event is
-
+   pragma Warnings(OFF, "aspect Unreferenced specified for ""Success""");
    function Events_Waiting
       (This : Queued_Event_Publisher)
        return Natural
@@ -16,6 +16,7 @@ package body ACO.Utils.Generic_Event is
       pragma Unreferenced (Success);
    begin
       This.Queue.Put (Data, Success);
+      pragma Warnings(ON, "aspect Unreferenced specified for ""Success""");
    end Put;
 
    procedure Process
